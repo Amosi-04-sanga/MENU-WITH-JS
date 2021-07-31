@@ -1,23 +1,5 @@
-// buttons object.
-const buttonsArr = [
-    {
-        id: 1,
-        category: 'all'
-    },
-    {
-        id: 2,
-        category: 'breakfast'
-    },
-    {
-        id: 3,
-        category: 'lunch'
-    },
-    {
-        id: 4,
-        category: 'dinner'
-    }
-];
 
+// Menu Items.
 const menu = [
     {
         id: 1,
@@ -117,11 +99,14 @@ const menu = [
     }
 ];
 
+
 // retrive createButtons on DOMContentLoaded.
 window.addEventListener( 'DOMContentLoaded', function() {
 
      createButtons();
      renderMenuItems(menu);
+     //retrive menuFilter function.
+     menuFilter();
 
 } );
 
@@ -132,47 +117,63 @@ const menu__section = document.querySelector('.menu__section');
 // create buttons.
 function createButtons() {
 
-    let buttons = buttonsArr.map( button => {
-        return `<button data-id=${button.category} class="menu__button">
-                     ${button.category}
-                </button>`;
-    });
+    // get an array of unique categories.
+    const categories = menu.reduce( (values,item) => {
+        
+        if( !values.includes(item.category) ) {
+            values.push(item.category);
+        }
+
+        return values;
+
+    }, ["all"] );
+
+    // create buttons
+    const buttons = categories.map( category => {
+
+       return `<button data-id=${category} class="menu__button">
+                   ${category}
+              </button>`;
+
+    } );
     
-    buttons = buttons.join('');
+    menu__buttons.innerHTML = buttons.join('');
+
     
-    menu__buttons.innerHTML = buttons;
     
-    //retrive menuFilter function.
-    menuFilter();
 }
 
 function menuFilter() {
 
-    const buttons = menu__buttons.childNodes;
-     
+    let buttons = menu__buttons.childNodes;
+    buttons = Array.from(buttons)
+
     buttons.forEach( button => {
-        button.addEventListener( 'click', () => {
-             const category = button.dataset.id;
-             
-             const menuItemFiltered = menu.filter( menuItem => {
+        
+        button.addEventListener( 'click', e => {
 
-                  if( menuItem.category === category ) {
-                      return menuItem;
-                  }
+            const category = e.target.dataset.id;
 
-             });
+            const thumnailsFiltered = menu.filter( menuItem => {
 
-             if( category === 'all' ) {
-                 renderMenuItems(menu);
-             }
+                if( menuItem.category === category ) {
+                    return menuItem;
+                }
 
-             else {
-                renderMenuItems(menuItemFiltered);
-             }
+            } );
 
-        });
-    })
-    
+            if( category === 'all' ) {
+                renderMenuItems(menu);
+            }
+            
+            else {
+                renderMenuItems(thumnailsFiltered);
+            }
+
+        } );
+
+    } );
+
 }
 
 
