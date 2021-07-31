@@ -33,7 +33,23 @@ body {
     margin: 4rem auto;
 
     &__header {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;        
+        height: 20vh;
         @include block-separation( 1rem,0 );
+        
+    }
+   
+    &__wave {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        transform: rotate(180deg);
+        z-index: -2;
     }
 
     &__heading {
@@ -79,6 +95,8 @@ body {
 
     &__item {
         margin-bottom: 3rem;
+        display: flex;
+        flex-direction: column;
     }
 
     &__photo-wrapper {
@@ -132,11 +150,12 @@ body {
             grid-template-columns: repeat(3, 1fr);
         }
  
+
     }
      
 }
 
-@media only screen and ( max-width: 700px ) {
+@media only screen and ( max-width: 750px ) {
     
     .menu {
 
